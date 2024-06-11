@@ -1,25 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const Timer = () => {
+ const [time, setTime] = useState(0);
+ const [timerOn, setTimerOn] = useState(false);
 
-export default App;
+ useEffect(() => {
+   let interval;
+   if (timerOn) {
+     interval = setInterval(() => {
+       setTime((prevTime) => prevTime + 1);
+     }, 1000);
+   } else {
+     clearInterval(interval);
+   }
+   return () => clearInterval(interval);
+ }, [timerOn]);
+
+ const startTimer = () => {
+   setTimerOn(true);
+ };
+
+ const stopTimer = () => {
+   setTimerOn(false);
+ };
+
+ const resetTimer = () => {
+   setTime(0);
+   setTimerOn(false);
+ };
+
+ return (
+   <div>
+     <h1><span style={{fontWeight: 'bold'}}>Timer:</span> {Math.floor(time / 60)} mins {time % 60} secs</h1>
+     <div>
+       <button style={{backgroundColor: 'green', color: 'white'}} onClick={startTimer}>Start</button>
+       <button style={{backgroundColor: 'red', color:'white'}} onClick={stopTimer}>Stop</button>
+       <button style={{backgroundColor: 'yellow', color: 'black'}} onClick={resetTimer}>Reset</button>
+     </div>
+   </div>
+ );
+};
+
+export default Timer;
+
