@@ -1,45 +1,52 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
-const Timer = () => {
- const [time, setTime] = useState(0);
- const [timerOn, setTimerOn] = useState(false);
+const Products = [
+  {
+    "productname": "Laptop1",
+    "price": 32336,
+    "rating": 4.7,
+    'discount': 63,
+    "availability": "yes"
+  }, {
+    "productname": "Laptop2",
+    "price": 42336,
+    "rating": 3,
+    'discount': 50,
+    "availability": "yes"
+  }, {
+    "productname": "Laptop3",
+    "price": 42436,
+    "rating": 9,
+    'discount': 60,
+    "availability": "out-of stock"
+  }, {
+    "productname": "Laptop4",
+    "price": 45236,
+    "rating": 4,
+    'discount': 20,
+    "availability": "yes"
+  }
+];
 
- useEffect(() => {
-   let interval;
-   if (timerOn) {
-     interval = setInterval(() => {
-       setTime((prevTime) => prevTime + 1);
-     }, 1000);
-   } else {
-     clearInterval(interval);
-   }
-   return () => clearInterval(interval);
- }, [timerOn]);
+const TopProducts = ({ topN }) => {
+  const [topProducts, setTopProducts] = useState(Products.slice(0, topN));
 
- const startTimer = () => {
-   setTimerOn(true);
- };
-
- const stopTimer = () => {
-   setTimerOn(false);
- };
-
- const resetTimer = () => {
-   setTime(0);
-   setTimerOn(false);
- };
-
- return (
-   <div>
-     <h1><span style={{fontWeight: 'bold'}}>Timer:</span> {Math.floor(time / 60)} mins {time % 60} secs</h1>
-     <div>
-       <button style={{backgroundColor: 'green', color: 'white'}} onClick={startTimer}>Start</button>
-       <button style={{backgroundColor: 'red', color:'white'}} onClick={stopTimer}>Stop</button>
-       <button style={{backgroundColor: 'yellow', color: 'black'}} onClick={resetTimer}>Reset</button>
-     </div>
-   </div>
- );
+  return (
+    <div>
+      <h1>Top {topN} Products</h1>
+      <ul>
+        {topProducts.map((product, index) => (
+          <li key={index}>
+            <div>Product Name: {product.productname}</div>
+            <div>Price: ${product.price}</div>
+            <div>Rating: {product.rating}</div>
+            <div>Discount: {product.discount}%</div>
+            <div>Availability: {product.availability}</div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 };
 
-export default Timer;
-
+export default TopProducts;
